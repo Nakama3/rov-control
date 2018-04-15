@@ -8,7 +8,7 @@
 // Define device details
 byte mac[] = {  
   0xDE, 0xAD, 0xBE, 0xEF, 0xAE, 0xED };
-IPAddress ip(192, 168, 1, 107);
+IPAddress ip(192, 168, 1, 107); //change this 
 
 unsigned int localPort = 8888;      // local port to listen on
 
@@ -23,37 +23,52 @@ Servo alpha_servo;
 Servo bravo_servo;
 Servo charlie_servo;
 Servo delta_servo;
-Servo claw_servo;
-Servo clawrot_servo;
+Servo echo_servo;
+Servo foxtrot_servo; 
+
+//Servo claw_servo;
+//Servo clawrot_servo;
 
 //REMEMBER, THE MOTOR MAPPINGS HERE ASSUME THAT YOU MAPPED ALPHA AND BRAVO TO FORWARD AND BACK
 //2017, WE DIDN'T DO THIS. TO FIX IT, WE PUT A PATCH ON THE SURFACE CODE. THIS CODE REMAINS UNAFFECTED DUE TO THE FACT
 //THAT ARDUINOS ARE REALLY SLOW RELATIVE TO THE BBB.
 
-byte alpha_pin = 7; //If you make an oopsie and put the motors in the wrong place like I did (Slater here), just change the pins and reload
+// 6 t100 motors
+byte alpha_pin = 7; 
 byte bravo_pin = 6;
 byte charlie_pin = 5;
 byte delta_pin = 3;
-byte claw_pin = 9;
-byte clawrot_pin = 8;
+byte echo_pin = 4 ; 
+byte foxtrot_pin = 2 ;
+
+
+//byte claw_pin = 9;
+//byte clawrot_pin = 8;
 
 void setup() {
   // start the Ethernet and UDP:
   Ethernet.begin(mac,ip);
   Udp.begin(localPort);
   Serial.begin(9600);
+  
   alpha_servo.attach(alpha_pin);
   bravo_servo.attach(bravo_pin);
   charlie_servo.attach(charlie_pin);
   delta_servo.attach(delta_pin);
-  claw_servo.attach(claw_pin);
-  clawrot_servo.attach(clawrot_pin);
+  echo_servo.attach(echo_pin);
+  foxtrot_servo.attach(foxtrot_pin);
+  //claw_servo.attach(claw_pin);
+  //clawrot_servo.attach(clawrot_pin);
+  
   alpha_servo.writeMicroseconds(1500);
   bravo_servo.writeMicroseconds(1500);
   charlie_servo.writeMicroseconds(1500);
   delta_servo.writeMicroseconds(1500);
-  claw_servo.write(0);
-  clawrot_servo.write(0);
+  echo_servo.writeMicroseconds(1500);
+  foxtrot_server.writeMicroseconds(1500); 
+  
+  //claw_servo.write(0);
+  //clawrot_servo.write(0);
   delay(1000);
 }
 
@@ -64,9 +79,16 @@ void loop() {
   int bravo_power;
   int charlie_power;
   int delta_power;
-  int claw;
-  int clawrot;
+  int echo_power; 
+  int foxtrot_power; 
+  
+ 
+  
+  //int claw;
+  //int clawrot;
+  
   String tmp;
+  
   String packetinfo;
   
   if(packetSize)
@@ -106,16 +128,24 @@ void loop() {
     tmp = packetinfo.substring(15,19);
     delta_power = atoi(tmp.c_str());
     tmp = packetinfo.substring(20,23);
-    claw = atoi(tmp.c_str());
+    //claw = atoi(tmp.c_str());
     tmp = packetinfo.substring(24,27);
-    clawrot = atoi(tmp.c_str());
+    echo_power = atoi(tmp.c_str());
+    //clawrot = atoi(tmp.c_str());
+    tmp = packetinfo.substri(28,31);
+    foxtrot_power = atoi(tmp.c_str());
+    
     
     alpha_servo.writeMicroseconds(alpha_power);
     bravo_servo.writeMicroseconds(bravo_power);
     charlie_servo.writeMicroseconds(charlie_power);
     delta_servo.writeMicroseconds(delta_power);
-    claw_servo.write(claw);
-    clawrot_servo.write(clawrot);
+    echo_servo.writeMicroseconds(echo_power); 
+    foxtrot_servo.writeMicroseconds(foxtrot_power);
+    
+    
+    //claw_servo.write(claw);
+    //clawrot_servo.write(clawrot);
     
     // send a reply, to the IP address and port that sent us the packet we received
    // Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
