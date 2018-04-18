@@ -32,14 +32,17 @@ void setup() {
     echoServo.writeMicroseconds(1500); // send "stop" signal to ESC.
     foxtrotServo.writeMicroseconds(1500); // send "stop" signal to ESC.
 
+    delay(7000);  // SET THIS TO 7000 BECAUSE BLUE ROBOTICS FUCKED UP
+
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   
-   int highSignal = 1700;  //between 1100 and 1900
-   int lowSignal = 1200; 
+   int highSignal = 1600;  //between 1100 and 1900
+   int lowSignal = 1400; 
+   int stopSignal = 1500; 
 
    
    
@@ -51,7 +54,16 @@ void loop() {
    echoServo.writeMicroseconds(highSignal);
    foxtrotServo.writeMicroseconds(highSignal);
 
-   delay(1000);                  // waits for a second
+   delay(3000);                  // waits for a second
+
+      alphaServo.writeMicroseconds(stopSignal);
+   bravoServo.writeMicroseconds(stopSignal);
+   charlieServo.writeMicroseconds(stopSignal);
+   deltaServo.writeMicroseconds(stopSignal);
+   echoServo.writeMicroseconds(stopSignal);
+   foxtrotServo.writeMicroseconds(stopSignal);
+
+   delay(2000); 
 
    alphaServo.writeMicroseconds(lowSignal);
    bravoServo.writeMicroseconds(lowSignal);
@@ -59,7 +71,7 @@ void loop() {
    deltaServo.writeMicroseconds(lowSignal);
    echoServo.writeMicroseconds(lowSignal);
    foxtrotServo.writeMicroseconds(lowSignal);
-  delay(1000); //wait for another second 
+  delay(3000); //wait for another second 
 
 
 
