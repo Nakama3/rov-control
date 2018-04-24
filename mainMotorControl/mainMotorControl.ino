@@ -19,6 +19,7 @@ char  ReplyBuffer[] = "Responce: OK ";       // a string to send back
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
+//Servos
 Servo alpha_servo;
 Servo bravo_servo;
 Servo charlie_servo;
@@ -34,12 +35,12 @@ Servo foxtrot_servo;
 //THAT ARDUINOS ARE REALLY SLOW RELATIVE TO THE BBB.
 
 // 6 t100 motors
-byte alpha_pin = 7; 
-byte bravo_pin = 6;
-byte charlie_pin = 5;
-byte delta_pin = 3;
-byte echo_pin = 4 ; 
-byte foxtrot_pin = 2 ;
+static const byte alpha_pin = 2; 
+static const byte bravo_pin = 3;
+static const byte charlie_pin = 4;
+static const byte delta_pin = 5;
+static const byte echo_pin = 6 ; 
+static const byte foxtrot_pin = 7 ;
 
 
 //byte claw_pin = 9;
@@ -50,7 +51,8 @@ void setup() {
   Ethernet.begin(mac,ip);
   Udp.begin(localPort);
   Serial.begin(9600);
-  
+
+  //Attaching actual Servos to pins
   alpha_servo.attach(alpha_pin);
   bravo_servo.attach(bravo_pin);
   charlie_servo.attach(charlie_pin);
@@ -59,7 +61,8 @@ void setup() {
   foxtrot_servo.attach(foxtrot_pin);
   //claw_servo.attach(claw_pin);
   //clawrot_servo.attach(clawrot_pin);
-  
+
+  //Start at Rest
   alpha_servo.writeMicroseconds(1500);
   bravo_servo.writeMicroseconds(1500);
   charlie_servo.writeMicroseconds(1500);
@@ -69,12 +72,14 @@ void setup() {
   
   //claw_servo.write(0);
   //clawrot_servo.write(0);
-  delay(1000);
+  delay(7000); //7000 BECAUSE BLUE ROBOTICS FUCKED UPPPPPPPPPPPP 
 }
 
 void loop() {
   // if there's data available, read a packet
   int packetSize = Udp.parsePacket();
+
+  //Power
   int alpha_power;
   int bravo_power;
   int charlie_power;
