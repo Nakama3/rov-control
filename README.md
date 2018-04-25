@@ -1,2 +1,2 @@
 # rov-control
-For communication between motors and Arduino
+For communication between Servo motors and Arduino
